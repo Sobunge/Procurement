@@ -28,11 +28,27 @@
                 <thead>
                     <tr>
                         <td><strong> Requisition id </strong></td>
-                        <td><strong> Description </strong></td>
-                        <td><strong> Status </strong></td>
-                        <td><strong> View </strong></td>
+                        <td><strong> Faculty </strong></td>
+                        <td><strong> Department </strong></td>
+                        <td><strong> Username </strong></td>
                     </tr>
                 </thead>
+                <tbody>
+                    <c:choose>
+                        <c:when test="${empty requisition}"> <tr><td> No item added</td> </tr> </c:when>
+                        <c:otherwise>
+                            <c:forEach var="req" items="${requisition}" >
+                                <tr>
+                                    <td> ${req.getId()}</td>
+                                    <td> ${req.getFaculty()}</td>
+                                    <td> ${req.getDepartment()}</td>
+                                    <td> ${req.getUsername()} </td>
+                                    <td> <a href="RequisitionApproval?reqId=${req.getId()}"> View </a> </td>
+                                </tr>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+                </tbody>
                
             </table>
         </div>

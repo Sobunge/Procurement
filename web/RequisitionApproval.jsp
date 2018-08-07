@@ -18,7 +18,7 @@
 
 <c:import url="/include/Header1.jsp"/>
 
-<c:import url="/include/sideBar3.jsp"/>
+<c:import url="/include/sideBar2.jsp"/>
 
 <div class="container" id="mainbody">
 
@@ -58,43 +58,18 @@
                 </tbody>
             </table>
 
-            <br><br><br>
-            <a href="javaScript:{openPopUp();}" class="btn btn-primary pull-right"> Add new item </a>
-
 
             <br><br>
             <div class="text-center">
-                <input type="submit" value="Submit Requisiton" class="btn btn-primary" >
+                <a class="btn btn-danger pull-left" style=" margin-left: 20px;"> Reject Requisition </a>
+
+                <!-- Trigger the modal with a button -->
+                <a class="btn btn-success pull-right" style="margin-right: 20px;" onclick="approveRequisition(this.form)"> Approve Requisition </a>
             </div>
+
+
+
     </form>
-
-    <form action="AddItem" method="POST" class="card text-center" style="width: 30rem; margin: 0 auto;" >
-        <div id="Adding" style="display:none; background-color: rgba(0,0,0,0.4);  padding: 10px; ">
-
-            <div class="form-group">
-                <label> Item </label>
-                <input type="text" class="form-control" required="" placeholder="Item" name="item">
-            </div>
-            <div class="form-group">
-                <label> Description </label>
-                <textarea class="form-control" rows="3" required="" name="description" placeholder="Description"></textarea>
-            </div>
-            <div class="form-group">
-                <label> Quantity </label>
-                <input type="text" placeholder="Quantity" required="" name="quantity">
-            </div>
-
-            <input type="submit" value="Add" class="btn btn-success"/>
-
-        </div>
-    </form>
-
-    <script>
-        function openPopUp() {
-            $('#Adding').css('display', 'block');
-            $('#Adding').dialog();
-        }
-    </script>
 
 </div>
 

@@ -2,7 +2,7 @@
 <div id="sideBar">
     <section id="label">
         <h1> COD </h1>
-        <h2> Profile </h2>
+        <h2><a href="Profile.jsp"> Profile </a></h2>
         <br><br>
         
         <p class="text-left"><span class="label label-default">Name: ${user.getName()}</span></p>

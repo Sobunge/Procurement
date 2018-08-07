@@ -1,5 +1,6 @@
 package Control;
 
+import Business.COD;
 import java.io.*;
 import java.sql.*;
 import java.util.logging.*;
@@ -28,6 +29,7 @@ public class login extends HttpServlet {
             throws ServletException, IOException {
 
         User user = new User();
+        COD cod = new COD();
 
         PrintWriter out = response.getWriter();
 
@@ -66,6 +68,26 @@ public class login extends HttpServlet {
             }
             else
             {
+                query = "select * from cod where username = ?";
+                
+                ps = connection.prepareStatement(query);
+                ps.setString(1, username);
+                rs = ps.executeQuery();
+                
+                while(rs.next()){
+                
+                    cod.setFaculty(rs.getString("faculty"));
+                    cod.setDepartment(rs.getString("department"));
+                }
+                    
+                
+                cod.setName(user.getName());
+                cod.setUsername(user.getUsername());
+                cod.setPassword(user.getPassword());
+                cod.setRole(user.getRole());
+                
+                session.setAttribute("cod", cod);
+                
                 url = "/CODHomepage.jsp";
             }
             request.setAttribute("message", message);
