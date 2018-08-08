@@ -17,7 +17,10 @@ import java.util.ArrayList;
 import java.util.Locale;
 import java.util.Random;
 import javax.annotation.Resource;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
+
 /**
  *
  * @author andy
@@ -26,90 +29,85 @@ public class CreateTender extends HttpServlet {
 
     private static final long serialVersionUID = 1L;
 
-    
-    
     @Resource(name = "jdbc/Procurement")
     private DataSource datasource;
-    
-    @Override 
+
+    @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
-    throws ServletException, IOException{
-        
-        response.setContentType("text/html; charset=UTF-8");
-        
-        String description = request.getParameter("description");
-        
-        
+            throws ServletException, IOException {
+
+        PrintWriter out = response.getWriter();
+
+        HttpSession session = request.getSession();
+
+        Requisition req = (Requisition)session.getAttribute("req");
+
+        Items item = new Items();
+
+        String message = "";
+        String url = "";
+
+        Connection connection = null;
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        String createTenderMsg;
+
+        // for inserting into tender table
         SimpleDateFormat formater = new SimpleDateFormat("yyyy-MM-dd");
-        
-        Date  closingdate = null;
-        
-        try { 
+
+        Date closingdate = null;
+
+        try {
             closingdate = formater.parse(request.getParameter("closingdate"));
         } catch (ParseException ex) {
             Logger.getLogger(CreateTender.class.getName()).log(Level.SEVERE, null, ex);
-        } 
-        
-        String number = getTenderNumber();
-               
-        
-        
-        
-        //SQL
-        String query = "insert into tenders values(?,?,?,?,?)";
-        String createTenderMsg = "";
-        String url;
-        
-        try{
-            
-            Connection connection = null;
-            PreparedStatement ps = null;
-            ResultSet rs = null;
-            ArrayList<Tender> tenders = new ArrayList<Tender>();
+        }
+
+        try {
+
+            String query = "select * from items where reqid = ?";
             connection = datasource.getConnection();
-          
+
             ps = connection.prepareStatement(query);
-            ps.setString(1, number);
-            ps.setString(2, description);
+
+            ps.setString(1, req.getId());
+
+            rs = ps.executeQuery();
+
+            while (rs.next()) {
+                item.setDescription(rs.getString("description"));
+            }
+
+            query = "insert into tenders values(?,?,?,?,?)";
+
+            ArrayList<Tender> tenders = new ArrayList<>();
+            connection = datasource.getConnection();
+
+            ps = connection.prepareStatement(query);
+            ps.setString(1, req.getId());
+            ps.setString(2, item.getDescription());
             ps.setDate(3, new java.sql.Date(closingdate.getTime()));
             ps.setString(4, "00:00:00");
             ps.setString(5, "active");
-                
-            
-            if(ps.executeUpdate() > 0){
+
+            if (ps.executeUpdate() > 0) {
                 createTenderMsg = "tender created successfuly";
-                url="/tender";
+                url = "/tender";
+            } else {
+                createTenderMsg = "Tender creation failed";
+                url = "/tenderCreation.jsp";
             }
-            else{
-                createTenderMsg= "Tender creation failed";
-                url ="/tenderCreation.jsp";
-            }
+
+            request.setAttribute("tenderMessage", createTenderMsg);
+            request.setAttribute("message", message);
             
-            
-            getServletContext().setAttribute("CTMsg", createTenderMsg);
-            request.getRequestDispatcher(url).forward(request, response);
-            
-                
+            RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
+            dispatcher.forward(request, response);
+
         } catch (SQLException ex) {
             Logger.getLogger(CreateTender.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-        
-    }
-    
-    public String getTenderNumber(){
-        
-        Random rand = new Random();
-        String tenderNo = "EU-";
-         char random[] = new char[]
-       {'x', 'y', 'z', 'a', 'b', 'c',  'e', 'f', 
-        'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
-        
-         for(int i = 0; i<7; i++){
-             tenderNo += random[rand.nextInt(random.length)];
-         }
-         
-         return tenderNo.toUpperCase(Locale.US);
+
     }
 
 }

@@ -12,7 +12,7 @@
     <section id="link">
 
         <a class="btn btn-default active btn-block btn" role="button" href="Requisitions"> New Requisition </a>
-        <a class="btn btn-default active btn-block btn" role="button" href="tenderCreation.jsp"> Publish Tender</a>
+        <a class="btn btn-default active btn-block btn" role="button" href="AllSuccessfulRequisition"> Publish Tender</a>
         <a class="btn btn-default active btn-block btn" role="button" href="tenderApplicants.jsp"> Tender Applicants </a>
         <a class="btn btn-default active btn-block btn" role="button" href="activeTenders.jsp"> Active Tenders </a>
         <a class="btn btn-default active btn-block btn" role="button" href="closedTenders.jsp"> Closed Tenders </a>

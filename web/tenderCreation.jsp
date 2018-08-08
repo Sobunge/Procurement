@@ -1,20 +1,20 @@
 <%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
-    <style>
- 
-        body
-        {
-            background:url(assets/img/procurement2.jpg) no-repeat;
-            background-size:cover;
-            font-family:Arial,sans-serif;
-        }
-        
-        footer{
-            float: left;
-            margin-top: 10px;
-        }
+<style>
 
-    </style>
+    body
+    {
+        background:url(assets/img/procurement2.jpg) no-repeat;
+        background-size:cover;
+        font-family:Arial,sans-serif;
+    }
+
+    footer{
+        float: left;
+        margin-top: 10px;
+    }
+
+</style>
 
 <c:import url="/include/Header1.jsp"/>
 
@@ -22,54 +22,81 @@
 
 <div class="container" id="mainbody">
 
-    <h1> Create New Tender</h1>
-    
+    <h1> Publish Tender </h1>
+
     <c:if test="${CTMsg != null}">
         <script>
             alert('${CTMsg}');
-    </script>
+        </script>
     </c:if>
-    
-    <div class="table-responsive">
-        <form  method="POST" class="form-group" action="CreateTender">
+
+    <form action="CreateTender" method="POST">
+
+        <div class="table-responsive">
             <table class="table">
-                <tr>
-                    <td><label> Tender Description</label></td>
-                    <td><textarea name="description" rows="7" cols="10" required class="form-control" ></textarea></td>
-                </tr>
-                
-                <tr>
-                    <td><label>Closing date</label></td>
-                    <td><input type="date" name="closingdate" required class="form-control" /></td>
-                </tr>
-                
-                
+                <thead>
+                    <tr>
+                        <th> Tender Number </th>
+                        <th> Faculty </th>
+                        <th> Department </th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td> ${req.getId()} </td>
+                        <td> ${req.getFaculty()} </td>
+                        <td> ${req.getDepartment()} </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th> Items </th>
+                        <th> Description </th>
+                        <th> Quantity </th>
+                    </tr>
+                </thead>
+                <tbody>
+
+                    <c:choose>
+                        <c:when test="${empty items}"> <tr><td> No item added</td> </tr> </c:when>
+                        <c:otherwise>
+                            <c:forEach var="item" items="${items}" >
+                                <tr>
+                                    <td> ${item.getItem()}</td>
+                                    <td> ${item.getDescription()}</td>
+                                    <td> ${item.getQuantity()}</td>
+                                </tr>
+                            </c:forEach>
+                        </c:otherwise>
+                    </c:choose>
+
+                </tbody>
             </table>
             
-            <input type="button" class="btn" value="Create tender" onclick="confirmTenderCreation(this.form)" />
-        </form>
-    </div>
+            <div class="card" style="width:50rem">
+                <div class="form-group">
+                    <label> Closing time </label>
+                    <input type="date" name="closingdate" required="" class="form-control">
+                </div>
+            </div>
+            
+
+            <br><br>
+            <div class="text-center">
+                <input type="submit" value="Publish tender" class="btn btn-primary" >
+            </div>
+    </form>
+
+
 </div>
-        
-<script>
-    
-       
-    function confirmTenderCreation(form){
-        
-        if(form.description.value ===""){
-            form.description.focus();
-            alert("Provide a description of the tender");
-        }
-        else  if(form.closingdate.value ===""){
-            form.closingdate.focus();
-            alert("Please provide tender expiration date");
-        }
-        else{
-            form.submit();
-        }
-    }
-    
-    
-    </script>
+
+</div>
 
 <c:import url="/include/Footer.jsp" />

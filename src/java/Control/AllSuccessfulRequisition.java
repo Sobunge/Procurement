@@ -44,6 +44,8 @@ public class AllSuccessfulRequisition extends HttpServlet {
         PrintWriter out = response.getWriter();
 
         HttpSession session = request.getSession();
+       
+        User user = (User)session.getAttribute("user");
         
         ArrayList<Requisition> req = new ArrayList<>();
         Requisition requisition = new Requisition();
@@ -75,7 +77,7 @@ public class AllSuccessfulRequisition extends HttpServlet {
             }
 
             session.setAttribute("requisition", req);
-
+            
             request.setAttribute("message", message);
 
             url = "/successfulRequisition.jsp";

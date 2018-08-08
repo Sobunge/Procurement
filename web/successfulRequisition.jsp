@@ -48,6 +48,10 @@
                                 <td> ${req.getDepartment()}</td>
                                 <td> ${req.getUsername()} </td>
                                 <td> <a href="SuccessfulRequisitionItems?reqId=${req.getId()}"> View </a> </td>
+                                <c:set var="role" scope="session" value="${user.getRole()}" />
+                                <c:if test="${role == 'DCPO'}">
+                                    <td><a href="tenderCreation?reqId=${req.getId()}"> Publish Tender </a></td>
+                                </c:if>
                             </tr>
                         </c:forEach>
                     </c:otherwise>
