@@ -18,7 +18,7 @@
 
 <c:import url="/include/Header1.jsp"/>
 
-<c:import url="/include/sideBar2.jsp"/>
+<c:import url="/include/sideBar3.jsp"/>
 
 <div class="container" id="mainbody">
 
@@ -61,7 +61,7 @@
 
             <br><br>
             <div class="text-center">
-                <a class="btn btn-danger pull-left" style=" margin-left: 20px;" href="RejectRequisition?reqId=${reqId}"> Reject Requisition </a>
+                <a class="btn btn-danger pull-left" style=" margin-left: 20px;"> Reject Requisition </a>
                 <a class="btn btn-success pull-right" style="margin-right: 20px;" href="ApproveRequisition?reqId=${reqId}"> Approve Requisition </a>
             </div>
     </form>

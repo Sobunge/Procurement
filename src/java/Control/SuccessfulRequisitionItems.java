@@ -1,7 +1,6 @@
 package Control;
 
-import Business.Requisition;
-import Business.Supplier;
+import Business.Items;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.Connection;
@@ -20,10 +19,11 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.sql.DataSource;
 
-public class Requisitions extends HttpServlet {
+public class SuccessfulRequisitionItems extends HttpServlet {
 
     @Resource(name="jdbc/Procurement")
      private DataSource datasource;
+ 
     
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
@@ -34,17 +34,18 @@ public class Requisitions extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        
-          //set content type
+
+        //set content type
         response.setContentType("text/html");
-        
+
         //print writer
         PrintWriter out = response.getWriter();
         
-        ArrayList<Requisition> req = new ArrayList<>();
-        Requisition requisition = new Requisition();
-
-                
+        String reqId = request.getParameter("reqId");
+        Items item = new Items();
+        
+        ArrayList<Items> items = new ArrayList<>();
+        
         String message = "";
         String url = "";
      
@@ -52,7 +53,7 @@ public class Requisitions extends HttpServlet {
         PreparedStatement ps = null;
         ResultSet rs = null;
         
-        String query = "select * from requisition where status = ?";
+        String query = "select * from items where reqid = ?";
         
         try
         {
@@ -60,26 +61,26 @@ public class Requisitions extends HttpServlet {
             
                        
             ps = connection.prepareStatement(query);
-            ps.setString(1, "Pending");
-            
+            ps.setString(1, reqId);
+                    
             rs = ps.executeQuery();
-           
+                        
             while(rs.next())
             {
-                requisition.setId(rs.getString("id"));
-                requisition.setUsername(rs.getString("username"));
-                requisition.setFaculty(rs.getString("faculty"));
-                requisition.setDepartment(rs.getString("department"));
-                
-                req.add(requisition);
+             item.setItem(rs.getString("item"));
+             item.setDescription(rs.getString("description"));
+             item.setQuantity(rs.getInt("quantity"));
             }
-           
+            
+            items.add(item);
+            
             HttpSession session = request.getSession();
-            session.setAttribute("requisition", req);
+            session.setAttribute("items", items);
+            session.setAttribute("reqId", reqId);
             
             request.setAttribute("message", message);
         
-            url = "/newRequisitions.jsp";
+            url = "/SuccessfulRequisitionItems.jsp";
             
             RequestDispatcher dispatcher = getServletContext().getRequestDispatcher(url);
             dispatcher.forward(request, response);
@@ -104,7 +105,6 @@ public class Requisitions extends HttpServlet {
             }
         
         }
-       
     }
- 
+
 }

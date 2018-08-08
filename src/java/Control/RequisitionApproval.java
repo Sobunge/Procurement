@@ -76,6 +76,7 @@ public class RequisitionApproval extends HttpServlet {
             
             HttpSession session = request.getSession();
             session.setAttribute("items", items);
+            session.setAttribute("reqId", reqId);
             
             request.setAttribute("message", message);
         

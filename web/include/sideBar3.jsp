@@ -12,8 +12,8 @@
     <section id="link">
         
         <a class="btn btn-default active btn-block btn" role="button" href="createRequisition.jsp"> Create Requisition </a>
-        <a class="btn btn-default active btn-block btn" role="button" href="successfulRequisition.jsp"> Successful Requisition </a>
-        <a class="btn btn-default active btn-block btn" role="button" href="failedRequisition.jsp"> Failed Requisition </a>
+        <a class="btn btn-default active btn-block btn" role="button" href="SuccessfulRequisition"> Successful Requisition </a>
+        <a class="btn btn-default active btn-block btn" role="button" href="FailedRequisition"> Failed Requisition </a>
         <a class="btn btn-default active btn-block btn" role="button" href="goodsArrived.jsp"> Goods Arrival </a>
         
     </section>

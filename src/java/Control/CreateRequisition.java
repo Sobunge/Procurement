@@ -53,7 +53,7 @@ public class CreateRequisition extends HttpServlet {
         ResultSet rs = null;
         String number = getRequisitionNumber();
 
-        String query = "insert into requisition(id,department,faculty,username) values(?,?,?,?)";
+        String query = "insert into requisition(id,department,faculty,username,status) values(?,?,?,?,?)";
 
         try {
             connection = datasource.getConnection();
@@ -63,7 +63,8 @@ public class CreateRequisition extends HttpServlet {
             ps.setString(2, cod.getDepartment());
             ps.setString(3, cod.getFaculty());
             ps.setString(4, cod.getUsername());
-
+            ps.setString(5, "Pending");
+                
             ps.executeUpdate();
 
             for (int i = 0; i < items.size(); i++) {
